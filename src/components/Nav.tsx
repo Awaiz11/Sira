@@ -148,13 +148,13 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
       >
         <Glow className="-right-1/3 top-1/4 h-[110vw] w-[110vw]" />
         <div className={cn(CONTAINER, "relative flex h-full flex-col justify-between pb-10 pt-32")}>
-          <nav aria-label="Mobile" className="flex flex-col gap-1">
+          <nav aria-label="Mobile" className="flex flex-col gap-4 sm:gap-6">
             {NAV_LINKS.map((link, i) => (
               <button
                 key={link.id}
                 type="button"
                 onClick={() => { setOpen(false); navigate(link.path); }}
-                className="flex items-baseline gap-5 overflow-hidden py-1 text-left"
+                className="flex items-baseline gap-5 overflow-hidden py-2 text-left"
               >
                 <span
                   className={cn(
@@ -167,7 +167,7 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
                 </span>
                 <span
                   className={cn(
-                    "block font-serif text-[clamp(3rem,13vw,4.5rem)] font-light leading-[1.08] text-ivory transition-transform duration-[1000ms] ease-out-expo",
+                    "block font-serif text-4xl sm:text-5xl font-light leading-[1.08] text-ivory transition-transform duration-[1000ms] ease-out-expo",
                     open ? "translate-y-0" : "translate-y-[110%]"
                   )}
                   style={{ transitionDelay: open ? `${300 + i * 80}ms` : "0ms" }}
