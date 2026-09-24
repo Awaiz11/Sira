@@ -1,15 +1,23 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/utils/cn";
 import { NAV_LINKS, VENUE } from "@/data/content";
 import { useScrollDirection } from "@/hooks/motion";
 import { useBarStatus } from "@/lib/hours";
-import { lockScroll, scrollToTarget, unlockScroll } from "@/lib/smoothScroll";
+import { lockScroll, unlockScroll } from "@/lib/smoothScroll";
 import { CONTAINER, Glow, PillButton, StatusDot } from "@/components/ui";
 
 export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolean }) {
   const { scrolled, hidden } = useScrollDirection();
   const [open, setOpen] = useState(false);
   const status = useBarStatus();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Close mobile menu whenever the route changes
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   // Freeze the page while the mobile menu is open
   useEffect(() => {
@@ -30,13 +38,6 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
-
-  const go = (id: string) => (e: MouseEvent) => {
-    e.preventDefault();
-    const wasOpen = open;
-    setOpen(false);
-    window.setTimeout(() => scrollToTarget(id === "top" ? 0 : `#${id}`), wasOpen ? 260 : 0);
-  };
 
   const reserve = () => {
     setOpen(false);
@@ -65,14 +66,18 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
           <div className="flex flex-1 items-center">
             <nav aria-label="Primary" className="hidden items-center gap-9 lg:flex">
               {NAV_LINKS.map((link) => (
-                <a
+                <NavLink
                   key={link.id}
-                  href={`#${link.id}`}
-                  onClick={go(link.id)}
-                  className="text-[10.5px] font-medium uppercase tracking-[0.32em] text-ivory/65 transition-colors duration-500 hover:text-ivory"
+                  to={link.path}
+                  className={({ isActive }) =>
+                    cn(
+                      "text-[10.5px] font-medium uppercase tracking-[0.32em] transition-colors duration-500",
+                      isActive ? "text-ivory" : "text-ivory/65 hover:text-ivory"
+                    )
+                  }
                 >
                   <span className="link-line pb-1">{link.label}</span>
-                </a>
+                </NavLink>
               ))}
             </nav>
 
@@ -103,14 +108,13 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
           </div>
 
           {/* Centre — wordmark */}
-          <a
-            href="#top"
-            onClick={go("top")}
-            aria-label="Sira — back to top"
+          <Link
+            to="/"
+            aria-label="Sira — back to home"
             className="font-serif text-[1.95rem] font-light leading-none tracking-[0.01em] text-ivory lg:text-[2.25rem]"
           >
             Sira<span className="text-gold">.</span>
-          </a>
+          </Link>
 
           {/* Right — live status + reserve */}
           <div className="flex flex-1 items-center justify-end gap-8">
@@ -146,7 +150,12 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
         <div className={cn(CONTAINER, "relative flex h-full flex-col justify-between pb-10 pt-32")}>
           <nav aria-label="Mobile" className="flex flex-col gap-1">
             {NAV_LINKS.map((link, i) => (
-              <a key={link.id} href={`#${link.id}`} onClick={go(link.id)} className="flex items-baseline gap-5 overflow-hidden py-1">
+              <button
+                key={link.id}
+                type="button"
+                onClick={() => { setOpen(false); navigate(link.path); }}
+                className="flex items-baseline gap-5 overflow-hidden py-1 text-left"
+              >
                 <span
                   className={cn(
                     "font-serif text-[15px] italic text-gold transition-opacity duration-700",
@@ -165,7 +174,7 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
                 >
                   {link.label}
                 </span>
-              </a>
+              </button>
             ))}
           </nav>
 

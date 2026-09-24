@@ -14,10 +14,10 @@ import toast from "@/assets/gallery-toast.jpg";
 export const images = { hero, experiencePour, experienceDetail };
 
 export const NAV_LINKS = [
-  { id: "experience", label: "Experience" },
-  { id: "signatures", label: "Signatures" },
-  { id: "gallery", label: "Gallery" },
-  { id: "visit", label: "Visit" },
+  { id: "home", label: "Home", path: "/" },
+  { id: "menu", label: "Menu", path: "/menu" },
+  { id: "gallery", label: "Gallery", path: "/gallery" },
+  { id: "contact", label: "Contact", path: "/contact" },
 ] as const;
 
 export const VENUE = {

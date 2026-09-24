@@ -1,4 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from "react";
+import type { NavigateFunction } from "react-router-dom";
 import { cn } from "@/utils/cn";
 import { images, VENUE } from "@/data/content";
 import { useParallax } from "@/hooks/motion";
@@ -8,7 +9,7 @@ import { CONTAINER, Magnetic, PillButton, StatusDot, TextLink } from "@/componen
 
 const d = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
-export function Hero({ ready, onReserve }: { ready: boolean; onReserve: () => void }) {
+export function Hero({ ready, onReserve, navigate }: { ready: boolean; onReserve: () => void; navigate?: NavigateFunction }) {
   const status = useBarStatus();
   const backdropRef = useParallax<HTMLDivElement>(0.32);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -112,13 +113,13 @@ export function Hero({ ready, onReserve }: { ready: boolean; onReserve: () => vo
                 <PillButton onClick={onReserve} />
               </Magnetic>
               <TextLink
-                href="#signatures"
+                href="/menu"
                 onClick={(e) => {
                   e.preventDefault();
-                  scrollToTarget("#signatures");
+                  navigate ? navigate("/menu") : (window.location.href = "/menu");
                 }}
               >
-                The Signatures
+                The Menu
               </TextLink>
             </div>
           </div>
@@ -136,7 +137,7 @@ export function Hero({ ready, onReserve }: { ready: boolean; onReserve: () => vo
         <span className="hidden sm:block">{VENUE.coords}</span>
         <button
           type="button"
-          onClick={() => scrollToTarget("#experience")}
+          onClick={() => navigate ? navigate("/menu") : scrollToTarget("#experience")}
           className="group flex items-center gap-4 justify-self-start transition-colors duration-500 hover:text-gold-soft sm:justify-self-center"
         >
           <span aria-hidden className="relative block h-9 w-px overflow-hidden bg-ivory/15">

@@ -24,7 +24,7 @@ function Caption({ fig, children, time }: { fig: string; children: string; time:
 
 export function Experience() {
   return (
-    <section id="experience" className="relative overflow-x-clip bg-charcoal py-28 sm:py-36 lg:py-48">
+    <section id="experience" className="relative overflow-x-clip bg-charcoal pt-28 pb-0 sm:pt-36 sm:pb-0 lg:pt-48 lg:pb-0 mb-12">
       <Glow className="-right-[25vw] top-[4%] h-[70vw] w-[70vw] lg:h-[55vw] lg:w-[55vw]" />
       <Glow tone="ember" className="-left-[30vw] bottom-[8%] h-[70vw] w-[70vw] lg:h-[50vw] lg:w-[50vw]" />
 
