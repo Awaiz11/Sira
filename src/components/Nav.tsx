@@ -5,7 +5,7 @@ import { NAV_LINKS, VENUE } from "@/data/content";
 import { useScrollDirection } from "@/hooks/motion";
 import { useBarStatus } from "@/lib/hours";
 import { lockScroll, unlockScroll } from "@/lib/smoothScroll";
-import { CONTAINER, Glow, PillButton, StatusDot } from "@/components/ui";
+import { CONTAINER, Glow, StatusDot } from "@/components/ui";
 
 export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolean }) {
   const { scrolled, hidden } = useScrollDirection();
@@ -38,11 +38,6 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
-
-  const reserve = () => {
-    setOpen(false);
-    onReserve();
-  };
 
   return (
     <>
@@ -116,22 +111,12 @@ export function Nav({ onReserve, ready }: { onReserve: () => void; ready: boolea
             Sira<span className="text-gold">.</span>
           </Link>
 
-          {/* Right — live status + reserve */}
+          {/* Right — live status */}
           <div className="flex flex-1 items-center justify-end gap-8">
             <p className="hidden items-center gap-3 text-[10px] font-medium uppercase tracking-[0.28em] text-mist xl:flex">
               <StatusDot open={status.open} />
               {status.label}
             </p>
-            <PillButton size="sm" onClick={reserve} className="hidden sm:inline-flex">
-              Reserve
-            </PillButton>
-            <button
-              type="button"
-              onClick={reserve}
-              className="text-[10px] font-medium uppercase tracking-[0.32em] text-gold-soft sm:hidden"
-            >
-              Book
-            </button>
           </div>
         </div>
       </header>
